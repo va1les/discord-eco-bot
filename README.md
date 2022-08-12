@@ -1,4 +1,4 @@
-# Discord bot template with [Discord.js v13](https://discord.js.org)
+# Disccord-eco-bot with [Discord.js v13](https://discord.js.org)
 ## Setup
 To run your discord bot, you need to insert the bot token into the `.env` file.
 
@@ -9,4 +9,13 @@ All categories for commands are located in the `commands' folder, the categories
 
 Event files are located by category in the `events' folder.
 
-# Enjoy using :)
+# Discord-eco-bot с [Discord.js v13](https://discord.js.org)
+## Установка
+Чтобы запустить вашего бота discord, вам нужно вставить токен бота в файл `.env`.
+
+Чтобы база данных MongoDB работала, вам необходимо вставить ссылку на подключение в файл `.env`
+
+## Информация
+Все категории для команд находятся в папке "команды", категории содержат файлы с командами.
+
+Файлы событий расположены по категориям в папке `события".
