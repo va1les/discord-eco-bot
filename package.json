@@ -1,0 +1,19 @@
+{
+  "name": "djs",
+  "version": "1.0.0",
+  "description": "To run your discord bot, you need to insert the bot token into the `.env` file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^1.1.0",
+    "@discordjs/rest": "^1.0.1",
+    "discord-api-types": "^0.37.2",
+    "discord.js": "^14.2.0",
+    "dotenv": "^16.0.1",
+    "mongoose": "^6.5.2"
+  }
+}
