@@ -15,7 +15,6 @@ module.exports = {
         let workReply = ['Таксиста', 'Курьера', 'Продавца', 'Программиста', 'Кассира', 'Строителя', 'Грузчика', 'Уборщика', 'Официанта', 'Электрика', 'Охранника', 'Повара']
         let result_workReply = Math.floor(Math.random() * workReply.length);
         const target = interaction.user;
-        if (target.bot) return interaction.reply({ content: `❌ **${interaction.user.tag}**, боты не могут участвовать в программе экономике.`, ephemeral: true });
 
         let data = await User.findOne({ guildId: interaction.guild.id, userId: target.id });
         if (!data) {
