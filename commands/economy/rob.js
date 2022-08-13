@@ -19,9 +19,8 @@ module.exports = {
         let data = await User.findOne({ guildId: interaction.guild.id, userId: interaction.user.id });
         let target_data = await User.findOne({ guildId: interaction.guild.id, userId: target.id });
 
-        if (!target_data || !data) {
-            await User.create({ guildId: interaction.guild.id, userId: target.id });
-        }
+        if (!data) { await User.create({ guildId: interaction.guild.id, userId: target.id }); }
+        else if (!target_data) { await User.create({ guildId: interaction.guild.id, userId: target.id }); }
         let newdata = await User.findOne({ guildId: interaction.guild.id, userId: target.id });
         let newtarget_data = await User.findOne({ guildId: interaction.guild.id, userId: target.id });
         if (Date.now() < data.economy.lastRob) {
@@ -37,7 +36,7 @@ module.exports = {
         } else if (newdata.economy.balance < 50) {
             return await interaction.reply({ content: `❌ **${interaction.user.tag}**, ваш баланс ниже 50.`, ephemeral: true })
         }
-        let random = Math.floor(Math.random() * 2);
+        let random = Math.floor(Math.random() * 200) + 1;
         // 0 = НЕ УДАЧА
         // 1 = УДАЧА
         await User.updateOne({ guildId: interaction.guild.id, userId: interaction.user.id }, {
@@ -45,17 +44,17 @@ module.exports = {
                 'economy.lastRob': Date.now() + 10800000,
             }
         })
-        if (random === 0) {
+        if (random < 100) {
             let fail_lost = newdata.economy.balance / Math.floor(Math.random() * 9) + 3
-            let fail_lost_round = Math.round(fail_lost)
+            let fail_lost_round = Math.floor(fail_lost)
             await User.updateOne({ guildId: interaction.guild.id, userId: interaction.user.id }, {
-                $set: {
-                    'economy.balance': newdata.economy.balance - fail_lost_round
+                $inc: {
+                    'economy.balance': -fail_lost_round,
                 }
             })
             await User.updateOne({ guildId: interaction.guild.id, userId: target.id }, {
-                $set: {
-                    'economy.balance': newtarget_data.economy.balance + fail_lost_round
+                $inc: {
+                    'economy.balance': +fail_lost_round
                 }
             })
             let Fail = new MessageEmbed()
@@ -64,17 +63,17 @@ module.exports = {
                 .addFields({ name: `Вы потеряли:`, value: `${fail_lost_round}` })
                 .setColor(Config.colors.warning)
             await interaction.reply({ embeds: [Fail] })
-        } else {
+        } else if (random > 100) {
             let win_prize = newtarget_data.economy.balance / Math.floor(Math.random() * 6) + 3
-            let win_prize_round = Math.round(win_prize)
+            let win_prize_round = Math.floor(win_prize)
             await User.updateOne({ guildId: interaction.guild.id, userId: interaction.user.id }, {
-                $set: {
-                    'economy.balance': newdata.economy.balance + win_prize_round
+                $inc: {
+                    'economy.balance': +win_prize_round
                 }
             })
             await User.updateOne({ guildId: interaction.guild.id, userId: target.id }, {
-                $set: {
-                    'economy.balance': newtarget_data.economy.balance - win_prize_round
+                $inc: {
+                    'economy.balance': -win_prize_round
                 }
             })
             let Win = new MessageEmbed()

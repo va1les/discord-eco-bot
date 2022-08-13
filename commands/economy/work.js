@@ -15,6 +15,7 @@ module.exports = {
         let workReply = ['Таксиста', 'Курьера', 'Продавца', 'Программиста', 'Кассира', 'Строителя', 'Грузчика', 'Уборщика', 'Официанта', 'Электрика', 'Охранника', 'Повара']
         let result_workReply = Math.floor(Math.random() * workReply.length);
         const target = interaction.user;
+        if (target.bot) return interaction.reply({ content: `❌ **${interaction.user.tag}**, боты не могут участвовать в программе экономике.`, ephemeral: true });
 
         let data = await User.findOne({ guildId: interaction.guild.id, userId: target.id });
         if (!data) {
@@ -30,9 +31,9 @@ module.exports = {
         }
         let amount = Math.floor(Math.random() * 400) + 100;
         await User.updateOne({ guildId: interaction.guild.id, userId: target.id }, {
+            $inc: { 'economy.balance': +amount },
             $set: {
                 'economy.lastWork': Date.now() + 7200000,
-                'economy.balance': data.economy.balance + amount
             }
         })
         // let newdata = await User.findOne({ guildId: interaction.guild.id, userId: target.id });

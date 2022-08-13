@@ -23,11 +23,11 @@ module.exports = {
         }
         if (data.economy.bank < amount) return interaction.reply({ content: `❌ ${interaction.user.tag}, введите перевод не больше вашего банка.`, ephemeral: true });
         await User.updateOne({ guildId: interaction.guild.id, userId: interaction.user.id }, {
-            $set: {
-                'economy.bank': data.economy.bank - amount,
-                'economy.balance': data.economy.balance + amount
-            }
+            $inc: {
+                'economy.bank': -amount,
+                'economy.balance': +amount
+            },
         }, { new: true, upsert: true })
-        interaction.reply({content: `На счет переведено **${amount}**.`, ephemeral: true})
+        interaction.reply({ content: `На счет переведено **${amount}**.`, ephemeral: true })
     }
 }
