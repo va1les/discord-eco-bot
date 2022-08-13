@@ -45,8 +45,8 @@ module.exports = {
             }
         })
         if (random < 100) {
-            let fail_lost = newdata.economy.balance / Math.floor(Math.random() * 9) + 3
-            let fail_lost_round = Math.floor(fail_lost)
+            let fail_lost = newdata.economy.balance / Math.round(Math.random() * 9) + 3
+            let fail_lost_round = Math.round(fail_lost)
             await User.updateOne({ guildId: interaction.guild.id, userId: interaction.user.id }, {
                 $inc: {
                     'economy.balance': -fail_lost_round,
@@ -64,8 +64,8 @@ module.exports = {
                 .setColor(Config.colors.warning)
             await interaction.reply({ embeds: [Fail] })
         } else if (random > 100) {
-            let win_prize = newtarget_data.economy.balance / Math.floor(Math.random() * 6) + 3
-            let win_prize_round = Math.floor(win_prize)
+            let win_prize = newtarget_data.economy.balance / Math.round(Math.random() * 6) + 3
+            let win_prize_round = Math.round(win_prize)
             await User.updateOne({ guildId: interaction.guild.id, userId: interaction.user.id }, {
                 $inc: {
                     'economy.balance': +win_prize_round
