@@ -1,4 +1,4 @@
-const { Interaction, Client, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js')
+const { Interaction, Client, EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js')
 const Perms = require('../../jsons/permissions.json');
 const { checkDB } = require('../../utils/funcs');
 
@@ -22,7 +22,7 @@ module.exports = {
         if (!cmd) return;
 
         interaction.guild.owner = await interaction.guild.fetchOwner()
-        interaction.default = async (message, foo) => await interaction.reply({ embeds: [new MessageEmbed({ description: message, color: Config.colors.success })], ephemeral: foo })
+        interaction.default = async (message, foo) => await interaction.reply({ embeds: [new EmbedBuilder({ description: message, color: Config.colors.success })], ephemeral: foo })
 
         if (cmd.permissions && !Config.developers.includes(interaction.user.id)) {
             let invalidPerms = []

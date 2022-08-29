@@ -1,4 +1,4 @@
-const { Client, CommandInteraction, MessageEmbed } = require('discord.js')
+const { Client, CommandInteraction, EmbedBuilder } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
 const User = require('../../models/User');
@@ -15,7 +15,7 @@ module.exports = {
         const profiles = await User.find({ guildId: interaction.guild.id });
         const sort = profiles.sort((a, b) => b.economy.balance - a.economy.balance);
         const top10 = sort.slice(0, 10);
-        let Embed = new MessageEmbed()
+        let Embed = new EmbedBuilder()
             .setDescription(`${top10.length ? top10.map((user, index) => `**${index + 1}.** <@${user.userId}> — 💰 ${user.economy.balance} | 🏦 ${user.economy.bank}`).join('\n') : 'Пользователей в списке нет.'}`)
             .setColor(Config.colors.success)
 

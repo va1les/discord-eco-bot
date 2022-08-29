@@ -1,4 +1,4 @@
-const { Client, CommandInteraction, MessageEmbed } = require('discord.js')
+const { Client, CommandInteraction, EmbedBuilder } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const User = require('../../models/User');
@@ -27,7 +27,7 @@ module.exports = {
             const hours = Math.floor(timeLeft / 3600);
             const minutes = Math.floor((timeLeft - hours * 3600) / 60);
             const seconds = timeLeft - hours * 3600 - minutes * 60;
-            return interaction.reply({ embeds: [new MessageEmbed().setColor(Config.colors.warning).setDescription(`⏱️ ${hours ? `${hours}:` : ''}${minutes ? `${minutes}:` : ''}${seconds ? `${seconds}` : ''}`)] })
+            return interaction.reply({ embeds: [new EmbedBuilder().setColor(Config.colors.warning).setDescription(`⏱️ ${hours ? `${hours}:` : ''}${minutes ? `${minutes}:` : ''}${seconds ? `${seconds}` : ''}`)] })
         }
         let amount = Math.floor(Math.random() * 400) + 100;
         await User.updateOne({ guildId: interaction.guild.id, userId: target.id }, {
@@ -37,8 +37,8 @@ module.exports = {
             }
         })
         // let newdata = await User.findOne({ guildId: interaction.guild.id, userId: target.id });
-        let Embed = new MessageEmbed()
-            .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+        let Embed = new EmbedBuilder()
+            .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
             .setDescription(`Вы устроились на работу в качестве **${workReply[result_workReply]}**.`)
             .addFields({ name: `Заработок:`, value: `💰 ${amount}` })
             .setColor(Config.colors.success)

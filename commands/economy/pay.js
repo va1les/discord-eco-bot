@@ -1,4 +1,4 @@
-const { Client, CommandInteraction, MessageEmbed } = require('discord.js')
+const { Client, CommandInteraction, EmbedBuilder } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const User = require('../../models/User');
@@ -16,6 +16,8 @@ module.exports = {
     async execute(client, interaction) {
         let amount = interaction.options.getString('количество');
         let target = interaction.options.getUser('пользователь');
+        if (target.user.id == interaction.user.id) return interaction.reply({ content: `❌ ${interaction.user.tag}, самому себе первести нельзя.`, ephemeral: true });
+        if (target.bot) return interaction.reply({ content: `❌ **${interaction.user.tag}**, боты не могут участвовать в программе экономике.`, ephemeral: true });
         let data = await User.findOne({ guildId: interaction.guild.id, userId: interaction.user.id });
         let target_data = await User.findOne({ guildId: interaction.guild.id, userId: target.id });
         if (!data) { await User.create({ guildId: interaction.guild.id, userId: target.id }); }

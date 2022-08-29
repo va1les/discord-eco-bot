@@ -1,4 +1,4 @@
-const { Client, CommandInteraction, MessageEmbed } = require('discord.js')
+const { Client, CommandInteraction, EmbedBuilder } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const User = require('../../models/User');
@@ -24,12 +24,12 @@ module.exports = {
             await User.create({ guildId: interaction.guild.id, userId: target.id });
         }
         let newdata = await User.findOne({ guildId: interaction.guild.id, userId: target.id });
-        let Embed = new MessageEmbed()
+        let Embed = new EmbedBuilder()
             .setAuthor({ name: `Баланс: ${target.tag}`, iconURL: interaction.guild.iconURL() })
             .setColor(Config.colors.success)
             .setDescription(`💰 Денег: ${newdata.economy.balance || 0}\n🏦 Банк: ${newdata.economy.bank || 0}\n🪙 Всего: ${newdata.economy.balance + newdata.economy.bank}`)
             .setTimestamp()
-            .setThumbnail(target.displayAvatarURL({ dynamic: true }))
+            .setThumbnail(target.displayAvatarURL())
             .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         interaction.reply({ embeds: [Embed] })
     }

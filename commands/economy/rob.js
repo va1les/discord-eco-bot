@@ -1,4 +1,4 @@
-const { Client, CommandInteraction, MessageEmbed } = require('discord.js')
+const { Client, CommandInteraction, EmbedBuilder } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const User = require('../../models/User');
@@ -15,6 +15,7 @@ module.exports = {
      */
     async execute(client, interaction) {
         const target = interaction.options.getUser('пользователь')
+        if (target.user.id == interaction.user.id) return interaction.reply({ content: `❌ ${interaction.user.tag}, самого себя ограбить нельзя.`, ephemeral: true });
         if (target.bot) return interaction.reply({ content: `❌ **${interaction.user.tag}**, боты не могут участвовать в программе экономике.`, ephemeral: true });
         let data = await User.findOne({ guildId: interaction.guild.id, userId: interaction.user.id });
         let target_data = await User.findOne({ guildId: interaction.guild.id, userId: target.id });
@@ -29,7 +30,7 @@ module.exports = {
             const hours = Math.floor(timeLeft / 3600);
             const minutes = Math.floor((timeLeft - hours * 3600) / 60);
             const seconds = timeLeft - hours * 3600 - minutes * 60;
-            return interaction.reply({ embeds: [new MessageEmbed().setColor(Config.colors.warning).setDescription(`⏱️ ${hours ? `${hours}:` : ''}${minutes ? `${minutes}:` : ''}${seconds ? `${seconds}` : ''}`)] })
+            return interaction.reply({ embeds: [new EmbedBuilder().setColor(Config.colors.warning).setDescription(`⏱️ ${hours ? `${hours}:` : ''}${minutes ? `${minutes}:` : ''}${seconds ? `${seconds}` : ''}`)] })
         }
         if (newtarget_data.economy.balance < 50) {
             return await interaction.reply({ content: `❌ **${interaction.user.tag}**, баланс указанного пользователя ниже 50.`, ephemeral: true })
@@ -57,8 +58,8 @@ module.exports = {
                     'economy.balance': +fail_lost_round
                 }
             })
-            let Fail = new MessageEmbed()
-                .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+            let Fail = new EmbedBuilder()
+                .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
                 .setDescription(`Вам не удалось ограбить **${target.tag}**.`)
                 .addFields({ name: `Вы потеряли:`, value: `${fail_lost_round}` })
                 .setColor(Config.colors.warning)
@@ -76,8 +77,8 @@ module.exports = {
                     'economy.balance': -win_prize_round
                 }
             })
-            let Win = new MessageEmbed()
-                .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+            let Win = new EmbedBuilder()
+                .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
                 .setDescription(`Вам удалось ограбить **${target.tag}**.`)
                 .addFields({ name: `Вы получили:`, value: `${win_prize_round}` })
                 .setColor(Config.colors.success)
