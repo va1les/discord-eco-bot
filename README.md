@@ -13,16 +13,14 @@
 📚 Discord.js Guide: https://discordjs.guide/additional-info/changes-in-v14.html
 
 ---
-# install
-### 📨 **File** `example.env` rename to `.env`
+# `.env`
 ```Shell
 token=YourTokenHere
 uri=YourMongoUriHere
 ```
 
-### 📥 Install all modules — `npm install`
+# 📥 Install all modules — `npm install`
 
-### ✅ Launch the Bot — `node .`
 ---
 ```js
 contacts: {
